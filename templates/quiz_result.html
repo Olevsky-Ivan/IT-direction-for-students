@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Рівні для профілю</h1>
+<p class="note">{{ quiz.result_note }}</p>
+<table>
+  <thead>
+    <tr>
+      <th>Навичка</th>
+      <th>Правильно</th>
+      <th>Рівень</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in levels %}
+    <tr>
+      <td>{{ item.skill }}</td>
+      <td>{{ item.correct }} з {{ item.asked }}</td>
+      <td>{{ item.level }} з 5</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><a href="/quiz">Пройти інший варіант</a></p>
+{% endblock %}
