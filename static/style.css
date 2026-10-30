@@ -1,3 +1,157 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #1a2c2a;
+  --cream: #f6f0e4;
+  --paper: #fffdf8;
+  --teal: #0b4f4c;
+  --wash: #e4f2ef;
+  --amber: #e8a317;
+  --amber-deep: #c8880c;
+  --line: #e4d5bc;
+}
+
 body {
+  margin: 0;
   font-family: sans-serif;
+  line-height: 1.45;
+  color: var(--ink);
+  background:
+    linear-gradient(var(--teal), var(--teal)) top / 100% 0.45rem no-repeat,
+    var(--cream);
+}
+
+main {
+  width: min(42rem, 100%);
+  margin: 0 auto;
+  padding: 2.2rem 1.25rem 3rem;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: 1.7rem;
+  color: var(--teal);
+}
+
+.note {
+  padding: 0.75rem 1rem;
+  background: var(--wash);
+  border-radius: 0.5rem;
+  border: 1px solid #c9e4df;
+}
+
+.modes {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.modes li {
+  margin: 0 0 1rem;
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.modes li:last-child {
+  border-color: var(--teal);
+}
+
+.mode-lead {
+  margin: 0;
+  color: var(--teal);
+  font-size: 0.92rem;
+}
+
+.modes h2 {
+  margin: 0.15rem 0 0.4rem;
+  font-size: 1.35rem;
+}
+
+.modes p {
+  margin: 0 0 0.9rem;
+}
+
+button {
+  font: inherit;
+  padding: 0.5rem 0.95rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: var(--amber);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--amber-deep);
+}
+
+form {
+  min-width: 0;
+}
+
+.question {
+  margin: 0 0 1rem;
+  padding: 0.95rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--paper);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.question h2 {
+  margin: 0 0 0.7rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--teal);
+}
+
+label {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  margin-top: 0.35rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 0.35rem;
+}
+
+label span {
+  min-width: 0;
+}
+
+label:hover {
+  background: var(--wash);
+}
+
+input[type="radio"] {
+  accent-color: var(--teal);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  background: var(--wash);
+  color: var(--teal);
+}
+
+a {
+  color: var(--teal);
 }

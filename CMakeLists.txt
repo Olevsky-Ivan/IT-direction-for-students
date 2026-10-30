@@ -10,6 +10,8 @@ add_library(career_lib
     cpp/src/student.cpp
     cpp/src/requirement.cpp
     cpp/src/quiz.cpp
+    cpp/src/recommendation.cpp
+    cpp/src/guidance_system.cpp
     cpp/src/directions/01_it_direction.cpp
     cpp/src/directions/02_development_direction.cpp
     cpp/src/directions/03_frontend_direction.cpp

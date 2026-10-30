@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Квіз на старті профілю</h1>
+<p>Питання зачіпають усі напрямки: розробку, фронтенд, бекенд, фулстек, дані, безпеку, тестування, мобільні застосунки, штучний інтелект і англійську. На кожен напрямок заготовлено 8 питань, але в один прохід входить лише частина. Тому двом людям майже ніколи не випадає той самий список.</p>
+<ul class="modes">
+  {% for size, mode in modes.items() %}
+  <li>
+    <form method="post" action="/quiz/start">
+      <input type="hidden" name="size" value="{{ size }}">
+      <p class="mode-lead">{{ mode.lead }}</p>
+      <h2>{{ mode.title }}</h2>
+      <p>{{ mode.text }}</p>
+      <button type="submit">Почати · {{ size }} питань</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
