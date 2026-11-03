@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Питання</h1>
+<p class="note">{{ quiz.note }}</p>
+<p>{{ quiz.count }} питань. Найменше на один напрямок випало {{ quiz.smallest }}.</p>
+<form method="post" action="/quiz/{{ token }}">
+  {% for question in quiz.questions %}
+  <article class="question">
+    <h2>{{ loop.index }}. {{ question.text }}</h2>
+    {% for option in question.options %}
+    <label>
+      <input type="radio" name="{{ question.id }}" value="{{ option.id }}" required>
+      <span>{{ option.text }}</span>
+    </label>
+    {% endfor %}
+  </article>
+  {% endfor %}
+  <button type="submit">Порахувати рівні</button>
+</form>
+{% endblock %}

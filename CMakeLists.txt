@@ -10,6 +10,8 @@ add_library(career_lib
     cpp/src/student.cpp
     cpp/src/requirement.cpp
     cpp/src/quiz.cpp
+    cpp/src/recommendation.cpp
+    cpp/src/guidance_system.cpp
     cpp/src/directions/01_it_direction.cpp
     cpp/src/directions/02_development_direction.cpp
     cpp/src/directions/03_frontend_direction.cpp
@@ -23,6 +25,21 @@ add_library(career_lib
 )
 
 target_include_directories(career_lib PUBLIC cpp/include)
+
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+execute_process(
+    COMMAND "${Python_EXECUTABLE}" -m pybind11 --cmakedir
+    OUTPUT_VARIABLE PYBIND11_CMAKE_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
+)
+find_package(pybind11 CONFIG REQUIRED PATHS "${PYBIND11_CMAKE_DIR}")
+pybind11_add_module(career_core cpp/bindings/bindings.cpp cpp/src/quiz.cpp)
+target_include_directories(career_core PRIVATE cpp/include)
+set_target_properties(career_core PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
 
 if(MSVC)
     target_compile_options(career_lib PRIVATE /W4)

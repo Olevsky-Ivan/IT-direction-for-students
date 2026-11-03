@@ -5,3 +5,4 @@ __pycache__/
 *.db
 *.pyd
 *.so
+libwinpthread-1.dll
