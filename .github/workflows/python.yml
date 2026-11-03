@@ -12,5 +12,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y g++ cmake
       - run: pip install -r requirements.txt
+      - run: cmake -S . -B build && cmake --build build
       - run: python -c "import app.main"

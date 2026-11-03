@@ -2,6 +2,8 @@ import json
 import random
 from pathlib import Path
 
+from app.services.career_service import draw_questions, score_questions
+
 BANK_PATH = Path(__file__).resolve().parents[2] / "data" / "quiz.json"
 
 SKILL_LABELS = {
@@ -49,24 +51,11 @@ def draw_quiz(count, rng=None):
         raise ValueError("unknown quiz size")
     rng = rng or random.SystemRandom()
     bank = load_bank()
-    by_skill = {}
-    for question in bank:
-        by_skill.setdefault(question["skill"], []).append(question)
-    skills = list(by_skill)
-    base, extra = divmod(count, len(skills))
-    quotas = {skill: base for skill in skills}
-    for skill in rng.sample(skills, extra):
-        quotas[skill] += 1
-    picked = []
-    for skill, quota in quotas.items():
-        pool = by_skill[skill]
-        take = min(quota, len(pool))
-        if take == 0:
-            continue
-        picked.extend(rng.sample(pool, take))
-    rng.shuffle(picked)
+    by_id = {question["id"]: question for question in bank}
+    picked = draw_questions(bank, count, rng.randrange(2**31))
     questions = []
-    for question in picked:
+    for item in picked:
+        question = by_id[item["id"]]
         options = list(question["options"])
         rng.shuffle(options)
         questions.append({
@@ -89,31 +78,14 @@ def draw_quiz(count, rng=None):
 
 
 def score_quiz(questions, answers):
-    asked = {}
-    correct = {}
-    for question in questions:
-        skill = question["skill"]
-        asked[skill] = asked.get(skill, 0) + 1
-        correct.setdefault(skill, 0)
-        if answers.get(question["id"]) == question["correct"]:
-            correct[skill] += 1
+    raw = score_questions(questions, answers)
     levels = []
-    for skill in asked:
-        level = (correct[skill] * 5 + asked[skill] // 2) // asked[skill]
+    for item in raw["levels"]:
         levels.append({
-            "skill": SKILL_LABELS.get(skill, skill),
-            "correct": correct[skill],
-            "asked": asked[skill],
-            "level": level,
+            "skill": SKILL_LABELS.get(item["skill"], item["skill"]),
+            "correct": item["correct"],
+            "asked": item["asked"],
+            "level": item["level"],
         })
     levels.sort(key=lambda item: item["skill"])
-    smallest = min(item["asked"] for item in levels) if levels else 0
-    return {"levels": levels, "smallest": smallest, "note": accuracy_note(smallest)}
-
-
-def accuracy_note(smallest):
-    if smallest <= 1:
-        return "На частину напрямків випало лише одне питання. Прогалину видно, але одна відповідь помітно змінює бал."
-    if smallest == 2:
-        return "На кожен напрямок випало щонайменше два питання. Одна вдала відповідь уже не вирішує тему."
-    return "На кожен напрямок випало щонайменше три питання. Бал склався з кількох різних перевірок."
+    return {"levels": levels, "smallest": raw["smallest"], "note": raw["note"]}
